@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>&nbsp;</title>
+<meta name="theme-color" content="#120a0d" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%23e0263a'/><circle cx='50' cy='44' r='30' fill='%23ff5566'/></svg>" />
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overscroll-behavior: none;
+  }
+
+  body {
+    background:
+      radial-gradient(120% 80% at 50% -10%, #2a1218 0%, transparent 60%),
+      radial-gradient(100% 60% at 50% 110%, #1d0e13 0%, transparent 60%),
+      #120a0d;
+    display: grid;
+    place-items: center;
+    min-height: 100svh;
+    padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom);
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+    overflow: hidden;
+    transition: background-color 90ms linear;
+  }
+
+  body.buzzing { background-color: #1c0d11; }
+
+  .stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+
+  .halo {
+    position: absolute;
+    width: min(96vw, 460px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,77,99,.35) 0%, rgba(255,77,99,0) 68%);
+    opacity: 0;
+    transform: scale(.85);
+    transition: opacity 140ms ease, transform 220ms ease;
+    pointer-events: none;
+  }
+  body.buzzing .halo { opacity: 1; transform: scale(1.06); animation: pulse 420ms ease-in-out infinite alternate; }
+  @keyframes pulse { to { transform: scale(1.14); opacity: .75; } }
+
+  .ring {
+    position: absolute;
+    width: min(78vw, 340px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid rgba(255,77,99,.5);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .ring.go { animation: ripple 620ms cubic-bezier(.2,.7,.3,1) forwards; }
+  @keyframes ripple {
+    from { opacity: .7; transform: scale(.92); }
+    to   { opacity: 0;   transform: scale(1.65); }
+  }
+
+  #buzzer {
+    position: relative;
+    width: min(78vw, 340px);
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    background:
+      radial-gradient(circle at 50% 32%, #ff6b7d 0%, #e0263a 52%, #a8172a 100%);
+    box-shadow:
+      inset 0 -10px 22px rgba(0,0,0,.34),
+      inset 0 10px 20px rgba(255,255,255,.28),
+      0 18px 0 #8e1224,
+      0 22px 38px rgba(0,0,0,.55),
+      0 0 0 12px #2b1116,
+      0 0 0 15px #3d181f;
+    transform: translateY(0);
+    transition: transform 70ms ease, box-shadow 70ms ease, filter 90ms ease;
+    touch-action: none;
+  }
+
+  #buzzer::after {
+    content: "";
+    position: absolute;
+    top: 9%;
+    left: 16%;
+    width: 46%;
+    height: 26%;
+    border-radius: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));
+    filter: blur(2px);
+    pointer-events: none;
+  }
+
+  #buzzer.down {
+    transform: translateY(15px);
+    filter: saturate(1.25) brightness(1.06);
+    box-shadow:
+      inset 0 -4px 14px rgba(0,0,0,.45),
+      inset 0 6px 16px rgba(255,255,255,.2),
+      0 3px 0 #8e1224,
+      0 6px 16px rgba(0,0,0,.5),
+      0 0 0 12px #2b1116,
+      0 0 0 15px #3d181f;
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage">
+    <div class="halo"></div>
+    <div class="ring" id="ring"></div>
+    <button id="buzzer" aria-label="Hold to buzz"></button>
+  </div>
+
+<script>
+(() => {
+  const btn  = document.getElementById('buzzer');
+  const ring = document.getElementById('ring');
+
+  /* ---------------- audio: a weak, deflated "meeeep" ---------------- */
+  let ctx, master;
+
+  function initAudio() {
+    if (ctx) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -14;
+    comp.ratio.value = 6;
+    master = ctx.createGain();
+    master.gain.value = 0.9;
+    master.connect(comp).connect(ctx.destination);
+  }
+
+  let voice = null;
+
+  function startBuzz() {
+    initAudio();
+    if (ctx.state === 'suspended') ctx.resume();
+    if (voice) return;
+
+    const t = ctx.currentTime;
+
+    // Two slightly detuned reedy oscillators => that cheap-plastic beating buzz.
+    const oscA = ctx.createOscillator();
+    const oscB = ctx.createOscillator();
+    oscA.type = 'sawtooth';
+    oscB.type = 'square';
+    oscA.frequency.setValueAtTime(232, t);
+    oscB.frequency.setValueAtTime(233.6, t);
+
+    // Sags a few Hz over the first moment — sounds tired, like a dying 9V.
+    oscA.frequency.linearRampToValueAtTime(224, t + 1.6);
+    oscB.frequency.linearRampToValueAtTime(225.4, t + 1.6);
+
+    // Wobble, so it never sounds like a clean synth tone.
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+    lfo.frequency.value = 6.2;
+    lfoGain.gain.value = 3.4;
+    lfo.connect(lfoGain);
+    lfoGain.connect(oscA.frequency);
+    lfoGain.connect(oscB.frequency);
+
+    // Lowpass hard: kills the bite, leaves a muffled honk.
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(1500, t);
+    lp.frequency.exponentialRampToValueAtTime(760, t + 0.9);
+    lp.Q.value = 4;
+
+    // Thin out the bottom so it's puny, not beefy.
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 170;
+
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.16, t + 0.018);  // soft attack, no snap
+    g.gain.linearRampToValueAtTime(0.115, t + 0.35);  // and it immediately gives up
+
+    oscA.connect(lp); oscB.connect(lp);
+    lp.connect(hp).connect(g).connect(master);
+
+    oscA.start(t); oscB.start(t); lfo.start(t);
+    voice = { oscA, oscB, lfo, g };
+  }
+
+  function stopBuzz() {
+    if (!voice) return;
+    const { oscA, oscB, lfo, g } = voice;
+    voice = null;
+    const t = ctx.currentTime;
+    g.gain.cancelScheduledValues(t);
+    g.gain.setValueAtTime(g.gain.value, t);
+    g.gain.linearRampToValueAtTime(0.0001, t + 0.09); // little deflating tail
+    [oscA, oscB, lfo].forEach(o => o.stop(t + 0.12));
+  }
+
+  /* ---------------- interaction ---------------- */
+  let held = false;
+
+  function down(e) {
+    if (held) return;
+    if (e.cancelable) e.preventDefault();
+    held = true;
+
+    btn.classList.add('down');
+    document.body.classList.add('buzzing');
+
+    ring.classList.remove('go');
+    void ring.offsetWidth;
+    ring.classList.add('go');
+
+    startBuzz();
+    if (navigator.vibrate) navigator.vibrate(18);
+  }
+
+  function up() {
+    if (!held) return;
+    held = false;
+    btn.classList.remove('down');
+    document.body.classList.remove('buzzing');
+    stopBuzz();
+  }
+
+  // Pointer events cover mouse + touch + pen in one path.
+  btn.addEventListener('pointerdown', down);
+  btn.addEventListener('pointerup', up);
+  btn.addEventListener('pointercancel', up);
+  btn.addEventListener('pointerleave', up);
+  btn.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Keyboard: space / enter hold to buzz.
+  window.addEventListener('keydown', e => {
+    if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) { e.preventDefault(); down(e); }
+  });
+  window.addEventListener('keyup', e => {
+    if (e.code === 'Space' || e.code === 'Enter') up();
+  });
+
+  // Never leave it droning if the tab/app goes away.
+  window.addEventListener('blur', up);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) up(); });
+
+  // Stop iOS double-tap zoom from eating fast repeated buzzes.
+  document.addEventListener('dblclick', e => e.preventDefault());
+  document.addEventListener('gesturestart', e => e.preventDefault());
+})();
+</script>
+</body>
+</html>
