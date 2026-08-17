@@ -148,6 +148,16 @@
     master.connect(comp).connect(ctx.destination);
   }
 
+  // Real recording if buzz.mp3 is present; synthesized buzz if it isn't.
+  let sample = null;
+  window.__buzzSource = 'synth';
+
+  fetch('buzz.mp3')
+    .then(r => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(r.status))))
+    .then(buf => { initAudio(); return ctx.decodeAudioData(buf); })
+    .then(decoded => { sample = decoded; window.__buzzSource = 'file'; })
+    .catch(() => { window.__buzzSource = 'synth'; });
+
   let voice = null;
 
   function startBuzz() {
@@ -156,6 +166,20 @@
     if (voice) return;
 
     const t = ctx.currentTime;
+
+    if (sample) {
+      // Loop the recording for as long as the button is held.
+      const src = ctx.createBufferSource();
+      src.buffer = sample;
+      src.loop = true;
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(1, t + 0.012); // avoids a click on attack
+      src.connect(g).connect(master);
+      src.start(t);
+      voice = { nodes: [src], g };
+      return;
+    }
 
     // Two slightly detuned reedy oscillators => that cheap-plastic beating buzz.
     const oscA = ctx.createOscillator();
@@ -199,18 +223,18 @@
     lp.connect(hp).connect(g).connect(master);
 
     oscA.start(t); oscB.start(t); lfo.start(t);
-    voice = { oscA, oscB, lfo, g };
+    voice = { nodes: [oscA, oscB, lfo], g };
   }
 
   function stopBuzz() {
     if (!voice) return;
-    const { oscA, oscB, lfo, g } = voice;
+    const { nodes, g } = voice;
     voice = null;
     const t = ctx.currentTime;
     g.gain.cancelScheduledValues(t);
     g.gain.setValueAtTime(g.gain.value, t);
     g.gain.linearRampToValueAtTime(0.0001, t + 0.09); // little deflating tail
-    [oscA, oscB, lfo].forEach(o => o.stop(t + 0.12));
+    nodes.forEach(o => o.stop(t + 0.12));
   }
 
   /* ---------------- interaction ---------------- */
