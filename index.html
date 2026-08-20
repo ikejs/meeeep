@@ -3,12 +3,49 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-<title>&nbsp;</title>
-<meta name="theme-color" content="#120a0d" />
+
+<title>Taboo Buzzer Online — Free Buzzer Sound for the Taboo Game | Meeeep</title>
+<meta name="description" content="A free online Taboo buzzer. Tap and hold the big red button for that unmistakable meeeep buzz — perfect when you've lost the buzzer from your Taboo board game. Works on phones, tablets, and desktop. No app, no ads." />
+<meta name="keywords" content="taboo buzzer, taboo buzzer online, taboo buzzer sound, taboo game buzzer, buzzer online, game buzzer, party game buzzer, buzzer sound button, meeeep" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://taboo-buzzer.ike.dev/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Meeeep" />
+<meta property="og:title" content="Taboo Buzzer Online — Meeeep" />
+<meta property="og:description" content="Lost your Taboo buzzer? Tap and hold the big red button for that unmistakable meeeep. Free, instant, works on any device." />
+<meta property="og:url" content="https://taboo-buzzer.ike.dev/" />
+<meta property="og:image" content="https://taboo-buzzer.ike.dev/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Taboo Buzzer Online — Meeeep" />
+<meta name="twitter:description" content="Lost your Taboo buzzer? Tap and hold the big red button for that unmistakable meeeep. Free, instant, works on any device." />
+<meta name="twitter:image" content="https://taboo-buzzer.ike.dev/og.png" />
+
+<meta name="theme-color" content="#170c26" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%23e0263a'/><circle cx='50' cy='44' r='30' fill='%23ff5566'/></svg>" />
+<meta name="apple-mobile-web-app-title" content="Meeeep" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='4' y='4' width='92' height='92' rx='24' fill='%236a3ab8'/><circle cx='50' cy='48' r='30' fill='%23e0263a'/><circle cx='50' cy='43' r='21' fill='%23ff5566'/></svg>" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Meeeep — Online Taboo Buzzer",
+  "url": "https://taboo-buzzer.ike.dev/",
+  "description": "A free online buzzer for the Taboo party game. Tap and hold the big red button to buzz. Works on phones, tablets, and desktop browsers.",
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Ike Holzmann" }
+}
+</script>
 
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,13 +57,17 @@
 
   body {
     background:
-      radial-gradient(120% 80% at 50% -10%, #2a1218 0%, transparent 60%),
-      radial-gradient(100% 60% at 50% 110%, #1d0e13 0%, transparent 60%),
-      #120a0d;
-    display: grid;
-    place-items: center;
+      radial-gradient(120% 80% at 50% -10%, #2b1745 0%, transparent 60%),
+      radial-gradient(100% 60% at 50% 110%, #1f1033 0%, transparent 60%),
+      #170c26;
+    color: #cdbfe6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     min-height: 100svh;
-    padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom);
+    padding: calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 14px);
     -webkit-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -36,7 +77,25 @@
     transition: background-color 90ms linear;
   }
 
-  body.buzzing { background-color: #1c0d11; }
+  body.buzzing { background-color: #221134; }
+
+  header { text-align: center; width: 100%; max-width: 34em; }
+
+  h1 {
+    font-size: clamp(1.15rem, 4.5vw, 1.6rem);
+    font-weight: 800;
+    letter-spacing: .02em;
+    color: #f0e9fb;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+  h1 .meeeep { color: #ff5566; }
+
+  .tagline {
+    margin-top: 6px;
+    font-size: clamp(.8rem, 3vw, .95rem);
+    color: #a893cc;
+  }
 
   .stage {
     position: relative;
@@ -46,10 +105,10 @@
 
   .halo {
     position: absolute;
-    width: min(96vw, 460px);
+    width: min(110vw, 560px);
     aspect-ratio: 1;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,77,99,.35) 0%, rgba(255,77,99,0) 68%);
+    background: radial-gradient(circle, rgba(255,77,99,.32) 0%, rgba(255,77,99,0) 68%);
     opacity: 0;
     transform: scale(.85);
     transition: opacity 140ms ease, transform 220ms ease;
@@ -58,9 +117,59 @@
   body.buzzing .halo { opacity: 1; transform: scale(1.06); animation: pulse 420ms ease-in-out infinite alternate; }
   @keyframes pulse { to { transform: scale(1.14); opacity: .75; } }
 
+  /* The purple molded-plastic body of the buzzer, like the real Taboo device:
+     a glossy rounded square of grape-purple plastic with a recessed well
+     holding the red dome button. */
+  .device {
+    position: relative;
+    width: min(86vw, 390px);
+    aspect-ratio: 1;
+    border-radius: 24%;
+    background:
+      radial-gradient(140% 120% at 30% 10%, #a276e6 0%, #7a48cb 36%, #5f30ab 66%, #46207f 100%);
+    box-shadow:
+      inset 0 8px 16px rgba(255,255,255,.28),
+      inset 0 -16px 30px rgba(18,5,40,.6),
+      inset 8px 0 18px rgba(255,255,255,.08),
+      inset -8px 0 18px rgba(18,5,40,.35),
+      0 28px 50px rgba(0,0,0,.6),
+      0 10px 18px rgba(0,0,0,.45);
+    display: grid;
+    place-items: center;
+  }
+
+  /* Long gloss streak across the top edge of the plastic. */
+  .device::before {
+    content: "";
+    position: absolute;
+    top: 4.5%;
+    left: 14%;
+    width: 72%;
+    height: 15%;
+    border-radius: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,0));
+    filter: blur(3px);
+    pointer-events: none;
+  }
+
+  /* Recessed circular well the button sits in. */
+  .well {
+    position: relative;
+    width: 78%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 38%, #3c1c6e 0%, #2d1254 62%, #250e47 100%);
+    box-shadow:
+      inset 0 12px 22px rgba(10,2,26,.65),
+      inset 0 -5px 10px rgba(255,255,255,.07),
+      0 1px 2px rgba(255,255,255,.22);
+    display: grid;
+    place-items: center;
+  }
+
   .ring {
     position: absolute;
-    width: min(78vw, 340px);
+    width: 100%;
     aspect-ratio: 1;
     border-radius: 50%;
     border: 2px solid rgba(255,77,99,.5);
@@ -75,7 +184,7 @@
 
   #buzzer {
     position: relative;
-    width: min(78vw, 340px);
+    width: 84%;
     aspect-ratio: 1;
     border: none;
     border-radius: 50%;
@@ -86,11 +195,9 @@
     box-shadow:
       inset 0 -10px 22px rgba(0,0,0,.34),
       inset 0 10px 20px rgba(255,255,255,.28),
-      0 18px 0 #8e1224,
-      0 22px 38px rgba(0,0,0,.55),
-      0 0 0 12px #2b1116,
-      0 0 0 15px #3d181f;
-    transform: translateY(0);
+      0 14px 0 #8e1224,
+      0 20px 30px rgba(10,2,26,.6);
+    transform: translateY(-7px);
     transition: transform 70ms ease, box-shadow 70ms ease, filter 90ms ease;
     touch-action: none;
   }
@@ -109,25 +216,68 @@
   }
 
   #buzzer.down {
-    transform: translateY(15px);
+    transform: translateY(6px);
     filter: saturate(1.25) brightness(1.06);
     box-shadow:
       inset 0 -4px 14px rgba(0,0,0,.45),
       inset 0 6px 16px rgba(255,255,255,.2),
       0 3px 0 #8e1224,
-      0 6px 16px rgba(0,0,0,.5),
-      0 0 0 12px #2b1116,
-      0 0 0 15px #3d181f;
+      0 6px 14px rgba(10,2,26,.55);
+  }
+
+  footer {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .coffee {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.14);
+    color: #e9e1f7;
+    font-size: .85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 120ms ease, transform 120ms ease;
+  }
+  .coffee:hover { background: rgba(255,255,255,.14); transform: translateY(-1px); }
+
+  .fineprint {
+    font-size: .68rem;
+    color: #6f5d95;
+    max-width: 34em;
+    line-height: 1.45;
   }
 </style>
 </head>
 <body>
 
+  <header>
+    <h1><span class="meeeep">Meeeep</span> — The Online Taboo Buzzer</h1>
+    <p class="tagline">Lost the buzzer? Tap &amp; hold the big red button. You know the sound.</p>
+  </header>
+
   <div class="stage">
     <div class="halo"></div>
-    <div class="ring" id="ring"></div>
-    <button id="buzzer" aria-label="Hold to buzz"></button>
+    <div class="device">
+      <div class="well">
+        <div class="ring" id="ring"></div>
+        <button id="buzzer" aria-label="Hold to buzz"></button>
+      </div>
+    </div>
   </div>
+
+  <footer>
+    <a class="coffee" href="https://venmo.com/u/ike-h" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+    <p class="fineprint">Free fan-made buzzer for game night. Not affiliated with or endorsed by Hasbro. Taboo is a trademark of Hasbro, Inc.</p>
+  </footer>
 
 <script>
 (() => {
