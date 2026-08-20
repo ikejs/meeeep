@@ -1,6 +1,6 @@
-# Meeeep — The Online Taboo Buzzer
+# The Online Taboo Buzzer
 
-A free, single-page web buzzer for the party game **Taboo**. Tap and hold the big red button for that unmistakable *meeeep* — perfect when the buzzer from the box has wandered off or its battery died.
+A free, single-page web buzzer for the party game **Taboo**. Tap and hold the big red button for that unmistakable buzz — perfect when the buzzer from the box has wandered off or its battery died.
 
 **Use it here:** https://taboo-buzzer.ike.dev/
 

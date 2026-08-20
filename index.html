@@ -4,31 +4,31 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
 
-<title>Taboo Buzzer Online — Free Buzzer Sound for the Taboo Game | Meeeep</title>
-<meta name="description" content="A free online Taboo buzzer. Tap and hold the big red button for that unmistakable meeeep buzz — perfect when you've lost the buzzer from your Taboo board game. Works on phones, tablets, and desktop. No app, no ads." />
-<meta name="keywords" content="taboo buzzer, taboo buzzer online, taboo buzzer sound, taboo game buzzer, buzzer online, game buzzer, party game buzzer, buzzer sound button, meeeep" />
+<title>Taboo Buzzer — Free Online Buzzer Sound for the Taboo Game</title>
+<meta name="description" content="A free online Taboo buzzer. Tap and hold the big red button for that unmistakable buzz — perfect when you've lost the buzzer from your Taboo board game. Works on phones, tablets, and desktop. No app, no ads." />
+<meta name="keywords" content="taboo buzzer, taboo buzzer online, taboo buzzer sound, taboo game buzzer, buzzer online, game buzzer, party game buzzer, buzzer sound button" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://taboo-buzzer.ike.dev/" />
 
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="Meeeep" />
-<meta property="og:title" content="Taboo Buzzer Online — Meeeep" />
-<meta property="og:description" content="Lost your Taboo buzzer? Tap and hold the big red button for that unmistakable meeeep. Free, instant, works on any device." />
+<meta property="og:site_name" content="Taboo Buzzer" />
+<meta property="og:title" content="The Online Taboo Buzzer" />
+<meta property="og:description" content="Lost your Taboo buzzer? Tap and hold the big red button for that unmistakable buzz. Free, instant, works on any device." />
 <meta property="og:url" content="https://taboo-buzzer.ike.dev/" />
 <meta property="og:image" content="https://taboo-buzzer.ike.dev/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Taboo Buzzer Online — Meeeep" />
-<meta name="twitter:description" content="Lost your Taboo buzzer? Tap and hold the big red button for that unmistakable meeeep. Free, instant, works on any device." />
+<meta name="twitter:title" content="The Online Taboo Buzzer" />
+<meta name="twitter:description" content="Lost your Taboo buzzer? Tap and hold the big red button for that unmistakable buzz. Free, instant, works on any device." />
 <meta name="twitter:image" content="https://taboo-buzzer.ike.dev/og.png" />
 
 <meta name="theme-color" content="#170c26" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="Meeeep" />
+<meta name="apple-mobile-web-app-title" content="Taboo Buzzer" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='4' y='4' width='92' height='92' rx='24' fill='%236a3ab8'/><circle cx='50' cy='48' r='30' fill='%23e0263a'/><circle cx='50' cy='43' r='21' fill='%23ff5566'/></svg>" />
 
@@ -36,7 +36,7 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Meeeep — Online Taboo Buzzer",
+  "name": "The Online Taboo Buzzer",
   "url": "https://taboo-buzzer.ike.dev/",
   "description": "A free online buzzer for the Taboo party game. Tap and hold the big red button to buzz. Works on phones, tablets, and desktop browsers.",
   "applicationCategory": "GameApplication",
@@ -89,7 +89,7 @@
     overflow-wrap: break-word;
     text-wrap: balance;
   }
-  h1 .meeeep { color: #ff5566; }
+  h1 .accent { color: #ff5566; }
 
   .tagline {
     margin-top: 6px;
@@ -260,7 +260,7 @@
 <body>
 
   <header>
-    <h1><span class="meeeep">Meeeep</span> — The Online Taboo Buzzer</h1>
+    <h1>The Online <span class="accent">Taboo Buzzer</span></h1>
     <p class="tagline">Lost the buzzer? Tap &amp; hold the big red button. You know the sound.</p>
   </header>
 
@@ -284,7 +284,7 @@
   const btn  = document.getElementById('buzzer');
   const ring = document.getElementById('ring');
 
-  /* ---------------- audio: a weak, deflated "meeeep" ---------------- */
+  /* ---------------- audio: a weak, deflated buzz ---------------- */
   let ctx, master;
 
   function initAudio() {
